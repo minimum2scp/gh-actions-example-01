@@ -92,3 +92,17 @@ jobs:
       - name: Run ohai
         run: sudo ohai
 
+  job-4:
+    name: Dump docker info
+    runs-on: ubuntu-latest
+    steps:
+      - run: docker --version
+      - run: docker version
+      - run: docker system info
+      - run: docker system df
+      - run: docker image ls -a
+      - run: docker container ls -a
+      - run: docker network ls
+      - run: docker volume ls
+      - run: docker plugin ls
+
