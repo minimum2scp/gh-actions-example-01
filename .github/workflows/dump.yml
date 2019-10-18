@@ -12,32 +12,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: export -p
-
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
-
       - name: Dump steps context
         env:
           STEPS_CONTEXT: ${{ toJson(steps) }}
         run: echo "$STEPS_CONTEXT"
-
       - name: Dump runner context
         env:
           RUNNER_CONTEXT: ${{ toJson(runner) }}
         run: echo "$RUNNER_CONTEXT"
-
       - name: Dump strategy context
         env:
           STRATEGY_CONTEXT: ${{ toJson(strategy) }}
         run: echo "$STRATEGY_CONTEXT"
-
       - name: Dump matrix context
         env:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
@@ -48,28 +42,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: cat /etc/os-release
-
       - run: uname -a
-
       - run: id -a
-
       - run: cat /proc/cpuinfo
-
       - run: free -m
-
       - run: cat /proc/meminfo
-
       - run: df -T -h
-
       - run: cat /proc/mounts
-
       - run: ip a show
-
       - run: ps -ef fww
-
-      - name: List packages
-        run: dpkg -l
-
+      - run: dpkg -l
       - name: List commands in PATH
         run: |
           for d in $(echo $PATH | sed -e 's/:/ /g'); do
@@ -84,13 +66,9 @@ jobs:
     name: Ohai
     runs-on: ubuntu-latest
     steps:
-      - name: Install ohai
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends ohai
-
-      - name: Run ohai
-        run: sudo ohai
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y --no-install-recommends ohai
+      - run: sudo ohai
 
   job-4:
     name: Dump docker info
