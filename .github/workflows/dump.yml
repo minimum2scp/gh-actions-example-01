@@ -7,8 +7,8 @@ name: dump
 on: push
 
 jobs:
-  dump:
-    name: dump
+  job-1:
+    name: Dump env, contexts
     runs-on: ubuntu-latest
     steps:
       - run: export -p
@@ -43,6 +43,10 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
 
+  job-2:
+    name: Dump packages, commands
+    runs-on: ubuntu-latest
+    steps:
       - name: List packages
         run: dpkg -l
 
@@ -56,6 +60,10 @@ jobs:
             fi
           done
 
+  job-3:
+    name: Ohai
+    runs-on: ubuntu-latest
+    steps:
       - name: Install ohai
         run: |
           sudo apt-get update
