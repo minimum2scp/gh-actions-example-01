@@ -51,7 +51,14 @@ jobs:
       - run: cat /proc/mounts
       - run: ip a show
       - run: ps -ef fww
-      - run: dpkg -l
+      - run: apt list --installed
+      - name: Show apt-lines
+        run: |
+          for f in /etc/apt/sources.list $(find /etc/apt/sources.list.d -name \*.list); do
+            echo ">>> $f"
+            cat $f
+            echo
+          done
       - name: List commands in PATH
         run: |
           for d in $(echo $PATH | sed -e 's/:/ /g'); do
