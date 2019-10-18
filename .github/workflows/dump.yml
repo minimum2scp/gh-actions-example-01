@@ -44,9 +44,29 @@ jobs:
         run: echo "$MATRIX_CONTEXT"
 
   job-2:
-    name: Dump packages, commands
+    name: Dump OS info
     runs-on: ubuntu-latest
     steps:
+      - run: cat /etc/os-release
+
+      - run: uname -a
+
+      - run: id -a
+
+      - run: cat /proc/cpuinfo
+
+      - run: free -m
+
+      - run: cat /proc/meminfo
+
+      - run: df -T -h
+
+      - run: cat /proc/mounts
+
+      - run: ip a show
+
+      - run: ps -ef fww
+
       - name: List packages
         run: dpkg -l
 
