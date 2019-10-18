@@ -43,3 +43,16 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
 
+      - name: List packages
+        run: dpkg -l
+
+      - name: List commands in PATH
+        run: |
+          for d in $(echo $PATH | sed -e 's/:/ /g'); do
+            if [ -d $d ]; then
+              echo ">>> $d"
+              ls -lah $d
+              echo
+            fi
+          done
+
