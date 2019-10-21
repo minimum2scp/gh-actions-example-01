@@ -7,7 +7,7 @@ name: dump
 on: push
 
 jobs:
-  job-1:
+  job-0:
     name: Dump env, contexts
     runs-on: ubuntu-latest
     steps:
@@ -36,6 +36,16 @@ jobs:
         env:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
+
+  job-1:
+    name: Checkout
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: pwd
+      - run: ls -lahR -I .git
+      - run: git status
+      - run: git remote -v
 
   job-2:
     name: Dump OS info
@@ -96,4 +106,5 @@ jobs:
       - run: docker network ls
       - run: docker volume ls
       - run: docker plugin ls
+
 
