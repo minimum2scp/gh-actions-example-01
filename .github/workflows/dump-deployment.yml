@@ -2,14 +2,15 @@
 # documents:
 # - https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 # - https://help.github.com/en/github/automating-your-workflow-with-github-actions/events-that-trigger-workflows#deployment-event-deployment
+# - https://developer.github.com/v3/repos/deployments/
 #
 
 name: dump deployment
 on: deployment
 
 jobs:
-  job-0:
-    name: Dump env, contexts
+  deploy:
+    name: deploy
     runs-on: ubuntu-latest
     steps:
       - run: export -p
@@ -37,4 +38,31 @@ jobs:
         env:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
+
+      - name: Create deployment_status.json with success
+        if: success()
+        run: |
+          cat << JSON > deployment_status.json
+          {
+            "state": "success"
+          }
+          JSON
+      - name: Create deployment_status.json with failure
+        if: "!success()"
+        run: |
+          cat << JSON > deployment_status.json
+          {
+            "state": "failure"
+          }
+          JSON
+      - name: POST deployment_statuses
+        if: always()
+        run: |
+          curl -fsS -X POST \
+            -H "Accept: application/json" \
+            -H "Authorization: token ${GITHUB_TOKEN}" \
+            -d @deployment_status.json \
+            ${{ github.event.deployment.statuses_url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
