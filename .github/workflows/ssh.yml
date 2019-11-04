@@ -10,6 +10,7 @@ jobs:
   ssh:
     name: ssh
     runs-on: ubuntu-latest
+    if: github.event.action == "ssh"
     steps:
       - run: export -p
       - name: Dump GitHub context
@@ -38,4 +39,5 @@ jobs:
         run: echo "$MATRIX_CONTEXT"
       - uses: actions/checkout@master
       - uses: mxschmitt/action-tmate@v1
+        timeout-minutes: 10
 
