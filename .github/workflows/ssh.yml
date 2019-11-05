@@ -10,7 +10,7 @@ jobs:
   ssh:
     name: ssh
     runs-on: ubuntu-latest
-    if: github.event.action == "ssh"
+    if: "github.event.action == 'ssh'"
     steps:
       - run: export -p
       - name: Dump GitHub context
