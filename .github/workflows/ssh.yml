@@ -40,4 +40,5 @@ jobs:
       - uses: actions/checkout@master
       - uses: mxschmitt/action-tmate@v1
         timeout-minutes: 10
+        continue-on-error: true
 
