@@ -35,5 +35,5 @@ jobs:
           GIT_PR_RELEASE_BRANCH_PRODUCTION: production
           GIT_PR_RELEASE_BRANCH_STAGING: master
           GIT_PR_RELEASE_TEMPLATE: .github/git-pr-release-template.erb
-        run: git-pr-release
+        run: git-pr-release --no-fetch
 
