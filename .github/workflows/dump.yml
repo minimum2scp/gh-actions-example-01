@@ -41,7 +41,7 @@ jobs:
     name: Checkout
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - run: pwd
       - run: ls -lahR -I .git
       - run: git status
