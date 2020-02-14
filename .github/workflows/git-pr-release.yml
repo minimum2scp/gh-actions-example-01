@@ -1,0 +1,39 @@
+
+name: git-pr-release
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  git-pr-release:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v2
+
+      # https://github.com/ruby/setup-ruby
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Check ruby version
+        run: |
+          set -x
+          ruby -v
+          gem env
+          gem list
+
+      # https://rubygems.org/gems/git-pr-release
+      # https://github.com/motemen/git-pr-release
+      - run: gem install git-pr-release -N
+
+      - name: Create/Update release PR
+        env:
+          GIT_PR_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PR_RELEASE_BRANCH_PRODUCTION: production
+          GIT_PR_RELEASE_BRANCH_STAGING: master
+          GIT_PR_RELEASE_TEMPLATE: .github/git-pr-release-template.erb
+        run: git-pr-release --no-fetch --dry-run
+
