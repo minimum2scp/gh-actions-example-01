@@ -41,7 +41,7 @@ jobs:
     name: Checkout
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - run: pwd
       - run: ls -lahR -I .git
       - run: git status
@@ -106,5 +106,39 @@ jobs:
       - run: docker network ls
       - run: docker volume ls
       - run: docker plugin ls
+
+  job-5:
+    name: Slack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: k0kubun/action-slack@v2.0.0
+        with:
+          payload: |
+            {
+              "username": "GitHub Actions",
+              "icon_emoji": ":octocat:",
+              "channel": "#notification",
+              "attachments": [{
+                "color": (/^success$/i.test("${{ job.status }}") ? "good" : "danger"),
+                "text": "${{ job.status }}: Workflow ${{ github.workflow }} (<${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}>)",
+                "footer": "<${{ github.event.repository.html_url }}|${{ github.repository }}>",
+                "footer_icon": "https://github.githubassets.com/favicon.ico",
+                "fields": [
+                  {
+                    "title": "github.ref",
+                    "value": "<${{ github.event.repository.html_url }}/tree/" + "${{ github.ref }}".replace(/^refs\/(heads|tags)\//, '') + "|${{ github.ref }}>",
+                    "short": true
+                  },
+                  {
+                    "title": "github.sha",
+                    "value": "<${{ github.event.repository.html_url }}/commit/${{ github.sha }}|" + "${{ github.sha }}".substring(0, 10) + ">",
+                    "short": true
+                  }
+                ]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: "always()"
 
 
