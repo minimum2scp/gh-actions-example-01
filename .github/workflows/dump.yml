@@ -119,7 +119,7 @@ jobs:
               "icon_emoji": ":octocat:",
               "channel": "#notification",
               "attachments": [{
-                "color": ("${{ job.status }}" == "Success" ? "good" : "danger"),
+                "color": (/^success$/i.test("${{ job.status }}") ? "good" : "danger"),
                 "text": "${{ job.status }}: Workflow ${{ github.workflow }} (<${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}>)",
                 "footer": "<${{ github.event.repository.html_url }}|${{ github.repository }}>",
                 "footer_icon": "https://github.githubassets.com/favicon.ico",
